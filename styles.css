@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #fafafa;
+}
+
+.container {
+    max-width: 1200px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (max-width: 640px) {
+    .container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+}
+
+/* Smooth transitions */
+button {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Custom shadow for cards */
+.shadow-custom {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Hover effects for cards */
+.event-card:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Section headers */
+h2.text-2xl {
+    letter-spacing: 0.05em;
+}
+
+/* Input and select styling */
+input[type="date"], select {
+    background-color: white;
+    border-color: #e2e8f0;
+    transition: all 0.2s ease-in-out;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input[type="date"]:focus, select:focus {
+    border-color: black;
+    ring-color: black;
+    outline: none;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+    .event-card {
+        margin-bottom: 1rem;
+    }
+    
+    .event-card img {
+        height: 200px;
+    }
+    
+    input[type="date"], select {
+        font-size: 16px; /* Prevents iOS zoom on focus */
+    }
+}
+
+/* Add this to your existing CSS */
+.event-card img {
+    display: block;
+    line-height: 0;
+    vertical-align: middle;
+    font-size: 0;
+}
+
+.event-card {
+    line-height: 0;
+}
+
+.event-card > div {
+    line-height: normal;
+}

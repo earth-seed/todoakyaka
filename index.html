@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO.TODAY | Akyaka</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateFilter = document.getElementById('dateFilter');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const eventCards = document.querySelectorAll('.event-card');
+
+            // Set today's date in YYYY-MM-DD format
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const saturday = new Date(today);
+            saturday.setDate(today.getDate() + 2);
+
+            // Update all cards with proper date format
+            eventCards.forEach(card => {
+                const cardDateText = card.querySelector('.event-date').textContent;
+                if (cardDateText.includes('BUGÜN')) {
+                    card.setAttribute('data-date', today.toISOString().split('T')[0]);
+                } else if (cardDateText.includes('YARIN')) {
+                    card.setAttribute('data-date', tomorrow.toISOString().split('T')[0]);
+                } else if (cardDateText.includes('CUMARTESİ')) {
+                    card.setAttribute('data-date', saturday.toISOString().split('T')[0]);
+                }
+            });
+
+            function filterEvents() {
+                const selectedDate = dateFilter.value;
+                const selectedCategory = categoryFilter.value;
+
+                eventCards.forEach(card => {
+                    const cardDate = card.getAttribute('data-date');
+                    const cardCategory = card.getAttribute('data-category');
+                    
+                    let showCard = true;
+
+                    if (selectedDate && cardDate !== selectedDate) {
+                        showCard = false;
+                    }
+
+                    if (selectedCategory && cardCategory !== selectedCategory) {
+                        showCard = false;
+                    }
+
+                    card.style.display = showCard ? 'block' : 'none';
+                });
+
+                // Update section visibility
+                document.querySelectorAll('.date-section').forEach(section => {
+                    const hasVisibleCards = [...section.querySelectorAll('.event-card')].some(
+                        card => card.style.display !== 'none'
+                    );
+                    section.style.display = hasVisibleCards ? 'block' : 'none';
+                });
+            }
+
+            dateFilter.addEventListener('change', filterEvents);
+            categoryFilter.addEventListener('change', filterEvents);
+        });
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-black text-white py-4 px-4 sm:py-6 sm:px-6">
+        <div class="container mx-auto text-center">
+            <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">TODO<span class="font-light">.TODAY</span></h1>
+            <h2 class="text-lg sm:text-xl font-light mt-1 sm:mt-2 tracking-wide">AKYAKA</h2>
+        </div>
+    </header>
+
+    <!-- Date and Category Selection -->
+    <div class="container mx-auto px-4 py-4 sm:py-6">
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <div class="relative w-full sm:w-auto">
+                <input type="date" id="dateFilter" class="w-full sm:w-auto px-4 py-2 border rounded-lg shadow-sm">
+            </div>
+            <select id="categoryFilter" class="w-full sm:w-auto px-4 py-2 border rounded-lg shadow-sm">
+                <option value="">Tüm Kategoriler</option>
+                <option value="live-music">Live Music</option>
+                <option value="party">Party</option>
+                <option value="dance">Dans</option>
+                <option value="dj-set">DJ Set</option>
+                <option value="meetup">Meetup</option>
+                <option value="yoga">Yoga</option>
+                <option value="kitesurfing">Kitesurfing</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Events List -->
+    <div class="container mx-auto px-4 pb-8">
+        <!-- Today's Events Section -->
+        <div class="date-section">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">UPCOMING</h2>
+            <div class="max-w-3xl mx-auto">
+                <!-- Yoga Event Card -->
+                <div class="event-card bg-white rounded-lg shadow-md overflow-hidden mb-4 sm:mb-6 hover:shadow-lg transition-shadow relative" data-date="2024-03-07" data-category="yoga">
+                    <div class="md:flex">
+                        <div class="md:w-48 md:absolute md:top-0 md:bottom-0 md:left-0 h-48 md:h-full bg-cover bg-center bg-no-repeat" style="background-image: url('lemongrass.png')"></div>
+                        <div class="md:ml-48 p-4 sm:p-6 flex-grow">
+                            <div class="flex items-center">
+                                <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="ml-2 text-gray-600 text-sm sm:text-base event-date">BUGÜN | 08:00 - 09:30</span>
+                            </div>
+                            <h3 class="mt-2 text-lg sm:text-xl font-semibold text-gray-900">Lemongrass'ta Sabah Yogası</h3>
+                            <div class="mt-2 flex items-center">
+                                <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                </svg>
+                                <span class="ml-2 text-gray-600 text-sm sm:text-base">Lemongrass Restaurant, Akyaka</span>
+                            </div>
+                            <p class="mt-2 text-gray-600 text-sm sm:text-base">Deniz manzarasında güne yoga ile başlayın. Tüm seviyeler için uygundur.</p>
+                            <div class="mt-4 flex items-center justify-between">
+                                <button class="bg-black text-white px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base rounded-lg hover:bg-gray-800 transition-colors">Detaylar</button>
+                                <button class="text-gray-600 hover:text-gray-800 transition-colors">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kitesurfing Event Card -->
+                <div class="event-card bg-white rounded-lg shadow-md overflow-hidden mb-4 sm:mb-6 hover:shadow-lg transition-shadow relative" data-date="2024-03-07" data-category="kitesurfing">
+                    <div class="md:flex">
+                        <div class="md:w-48 md:absolute md:top-0 md:bottom-0 md:left-0 h-48 md:h-full bg-cover bg-center bg-no-repeat" style="background-image: url('kitesurf.png')"></div>
+                        <div class="md:ml-48 p-4 sm:p-6 flex-grow">
+                            <div class="flex items-center">
+                                <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="ml-2 text-gray-600 text-sm sm:text-base event-date">BUGÜN | 11:00 - 16:00</span>
+                            </div>
+                            <h3 class="mt-2 text-lg sm:text-xl font-semibold text-gray-900">Kitesurf Başlangıç Dersi</h3>
+                            <div class="mt-2 flex items-center">
+                                <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                </svg>
+                                <span class="ml-2 text-gray-600 text-sm sm:text-base">Akyaka Kitesurf Beach</span>
+                            </div>
+                            <p class="mt-2 text-gray-600 text-sm sm:text-base">Profesyonel eğitmenler eşliğinde kitesurf öğrenin. Ekipman dahildir.</p>
+                            <div class="mt-4 flex items-center justify-between">
+                                <button class="bg-black text-white px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base rounded-lg hover:bg-gray-800 transition-colors">Detaylar</button>
+                                <button class="text-gray-600 hover:text-gray-800 transition-colors">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Music Event Card -->
+                <div class="event-card bg-white rounded-lg shadow-md overflow-hidden mb-4 sm:mb-6 hover:shadow-lg transition-shadow relative" data-date="2024-03-07" data-category="live-music">
+                    <div class="md:flex">
+                        <div class="md:w-48 md:absolute md:top-0 md:bottom-0 md:left-0 h-48 md:h-full bg-cover bg-center bg-no-repeat" style="background-image: url('https://via.placeholder.com/300x200')"></div>
+                        <div class="md:ml-48 p-4 sm:p-6 flex-grow">
+                            <div class="flex items-center">
+                                <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="ml-2 text-gray-600 text-sm sm:text-base event-date">BUGÜN | 20:00 - 23:00</span>
+                            </div>
+                            <h3 class="mt-2 text-lg sm:text-xl font-semibold text-gray-900">Akustik Gece @ Lemongrass</h3>
+                            <div class="mt-2 flex items-center">
+                                <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                </svg>
+                                <span class="ml-2 text-gray-600 text-sm sm:text-base">Lemongrass Restaurant</span>
+                            </div>
+                            <p class="mt-2 text-gray-600 text-sm sm:text-base">Yerel müzisyenlerle akustik müzik gecesi. Rezervasyon önerilir.</p>
+                            <div class="mt-4 flex items-center justify-between">
+                                <button class="bg-black text-white px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base rounded-lg hover:bg-gray-800 transition-colors">Detaylar</button>
+                                <button class="text-gray-600 hover:text-gray-800 transition-colors">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tomorrow's Events Section -->
+        <div class="date-section">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 mt-12 text-center">TOMORROW</h2>
+            <div class="max-w-3xl mx-auto">
+                <!-- Ecstatic Dance Event -->
+                <div class="event-card bg-white rounded-lg shadow-md overflow-hidden mb-6 hover:shadow-lg transition-shadow relative" data-date="2024-03-08" data-category="dance">
+                    <div class="md:flex">
+                        <div class="md:w-48 md:absolute md:top-0 md:bottom-0 md:left-0 h-48 md:h-full bg-cover bg-center bg-no-repeat" style="background-image: url('https://via.placeholder.com/300x200')"></div>
+                        <div class="md:ml-48 p-4 sm:p-6 flex-grow">
+                            <div class="flex items-center">
+                                <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="ml-2 text-gray-600 event-date">YARIN | 19:30 - 22:00</span>
+                            </div>
+                            <h3 class="mt-2 text-xl font-semibold text-gray-900">Bhavana Ecstatic Dance</h3>
+                            <div class="mt-2 flex items-center">
+                                <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                </svg>
+                                <span class="ml-2 text-gray-600">Bhavana Studio, Akyaka</span>
+                            </div>
+                            <p class="mt-2 text-gray-600">Özgür dans ve hareket meditasyonu. DJ eşliğinde organik akış.</p>
+                            <div class="mt-4 flex items-center justify-between">
+                                <button class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors">Detaylar</button>
+                                <button class="text-gray-600 hover:text-gray-800 transition-colors">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beach Party Event Card -->
+                <div class="event-card bg-white rounded-lg shadow-md overflow-hidden mb-6 hover:shadow-lg transition-shadow relative" data-date="2024-03-08" data-category="party">
+                    <div class="md:flex">
+                        <div class="md:w-48 md:absolute md:top-0 md:bottom-0 md:left-0 h-48 md:h-full bg-cover bg-center bg-no-repeat" style="background-image: url('https://via.placeholder.com/300x200')"></div>
+                        <div class="md:ml-48 p-4 sm:p-6 flex-grow">
+                            <div class="flex items-center">
+                                <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="ml-2 text-gray-600 event-date">YARIN | 21:00 - 02:00</span>
+                            </div>
+                            <h3 class="mt-2 text-xl font-semibold text-gray-900">Sunset Beach Party</h3>
+                            <div class="mt-2 flex items-center">
+                                <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                </svg>
+                                <span class="ml-2 text-gray-600">Akyaka Plajı</span>
+                            </div>
+                            <p class="mt-2 text-gray-600">DJ performansları eşliğinde plaj partisi. Gün batımından gece yarısına.</p>
+                            <div class="mt-4 flex items-center justify-between">
+                                <button class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors">Detaylar</button>
+                                <button class="text-gray-600 hover:text-gray-800 transition-colors">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add a new section for the weekend -->
+    <div class="date-section">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 mt-12 text-center">SATURDAY, MAR 9</h2>
+        <div class="max-w-3xl mx-auto">
+            <div class="event-card bg-white rounded-lg shadow-md overflow-hidden mb-6 hover:shadow-lg transition-shadow relative" data-date="2024-03-09" data-category="meetup">
+                <div class="md:flex">
+                    <div class="md:w-48 md:absolute md:top-0 md:bottom-0 md:left-0 h-48 md:h-full bg-cover bg-center bg-no-repeat" style="background-image: url('https://via.placeholder.com/300x200')"></div>
+                    <div class="md:ml-48 p-4 sm:p-6 flex-grow">
+                        <div class="flex items-center">
+                            <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="ml-2 text-gray-600 event-date">CUMARTESİ | 15:00 - 17:00</span>
+                        </div>
+                        <h3 class="mt-2 text-xl font-semibold text-gray-900">Türkçe-İngilizce Dil Değişimi</h3>
+                        <div class="mt-2 flex items-center">
+                            <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            </svg>
+                            <span class="ml-2 text-gray-600">Kafeka Coffee</span>
+                        </div>
+                        <p class="mt-2 text-gray-600">Haftalık dil değişim buluşması. Her seviyeye açık.</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <button class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors">Detaylar</button>
+                            <button class="text-gray-600 hover:text-gray-800 transition-colors">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
